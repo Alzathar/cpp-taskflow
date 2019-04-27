@@ -516,7 +516,7 @@ std::pair<Task, Task> FlowBuilder::transform_reduce(I beg, I end, T& result, B&&
   }
 
   // target synchronizer 
-  target.work([&result, bop, res=MoC{std::move(g_results)}, w=id] () {
+  target.work([&result, bop, res=MoC<decltype(g_results)>{std::move(g_results)}, w=id] () {
     for(auto i=0u; i<w; i++) {
       result = bop(std::move(result), res.object[i]);
     }
@@ -582,7 +582,7 @@ std::pair<Task, Task> FlowBuilder::transform_reduce(
   }
 
   // target synchronizer 
-  target.work([&result, bop, g_results=MoC{std::move(g_results)}, w=id] () {
+  target.work([&result, bop, g_results=MoC<decltype(g_results)>{std::move(g_results)}, w=id] () {
     for(auto i=0u; i<w; i++) {
       result = bop(std::move(result), std::move(g_results.object[i]));
     }
@@ -712,7 +712,7 @@ std::pair<Task, Task> FlowBuilder::reduce(I beg, I end, T& result, B&& op) {
   //    result = op(std::move(result), fu.get());
   //  }
   //});
-  target.work([g_results=MoC{std::move(g_results)}, &result, op, w=id] () {
+  target.work([g_results=MoC<decltype(g_results)>{std::move(g_results)}, &result, op, w=id] () {
     for(auto i=0u; i<w; i++) {
       result = op(std::move(result), g_results.object[i]);
     }
