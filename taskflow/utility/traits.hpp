@@ -100,7 +100,7 @@ struct MoC {
 // Functors.
 //-----------------------------------------------------------------------------
 // See https://en.cppreference.com/w/cpp/utility/variant/visit
-#if defined(CPP_TASKFLOW_VARIANT_VISIT_HELPER_4)
+#if defined(CPP_TASKFLOW_STD_VARIANT_VISIT_HELPER_4)
 // helper type for the visitor #4
 // Overloadded.
 template <typename... Ts>
