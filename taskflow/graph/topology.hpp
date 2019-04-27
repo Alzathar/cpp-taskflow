@@ -112,7 +112,7 @@ inline void Topology::dump(std::ostream& os) const {
   
   os << "digraph Topology {\n";
 
-#if define(CPP_TASKFLOW_VARIANT_VISIT_HELPER_4)
+#if defined(CPP_TASKFLOW_VARIANT_VISIT_HELPER_4)
   std::visit(Functors{
     [&] (const Graph& graph) {
       for(const auto& node : graph) {
