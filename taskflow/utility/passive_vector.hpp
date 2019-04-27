@@ -180,8 +180,12 @@ class PassiveVector {
     }
     
   private:
-    
+#if defined(CPP_TASKFLOW_STD_BYTE_ENUM_CLASS)
     std::byte _stack[S*sizeof(T)];
+#else
+    enum class byte : unsigned char {};
+    byte _stack[S*sizeof(T)];
+#endif
     
     T* _data;
     
