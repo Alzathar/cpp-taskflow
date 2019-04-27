@@ -179,13 +179,13 @@ class SingularAllocator {
       typedef SingularAllocator<U> other;
     };
 
-    explicit SingularAllocator() {}
-    ~SingularAllocator() {}
+    SingularAllocator() = default;
+    ~SingularAllocator() = default;
 
-    explicit SingularAllocator(const SingularAllocator&) {}
+    SingularAllocator(const SingularAllocator&) = default;
 
     template<typename U>
-    explicit SingularAllocator(const SingularAllocator<U>&) {}
+    SingularAllocator(const SingularAllocator<U>&) {};
 
     T* allocate(size_t n=1) ;          
     void deallocate(T*, size_t n=1); 
