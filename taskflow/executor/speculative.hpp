@@ -181,7 +181,7 @@ void SpeculativeExecutor<Closure>::_shutdown(){
   assert(is_owner());
 
   { 
-    std::unique_lock lock(_mutex);
+    std::unique_lock<std::mutex> lock(_mutex);
 
     _exiting = true;
     
@@ -221,7 +221,7 @@ void SpeculativeExecutor<Closure>::_spawn(unsigned N) {
 
        auto& w = _workers[me];
 
-       std::unique_lock lock(_mutex);
+       std::unique_lock<std::mutex> lock(_mutex);
        
        while(!_exiting){
          if(_tasks.empty()){

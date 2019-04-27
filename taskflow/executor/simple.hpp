@@ -166,7 +166,7 @@ void SimpleExecutor<Closure>::_spawn(unsigned N) {
         
       Closure task;
           
-      std::unique_lock lock(_mutex);
+      std::unique_lock<std::mutex> lock(_mutex);
 
       while(!_stop) {
         

@@ -176,7 +176,7 @@ void ProactiveExecutor<Closure>::_shutdown() {
   assert(is_owner());
 
   { 
-    std::unique_lock lock(_mutex);
+    std::unique_lock<std::mutex> lock(_mutex);
 
     _exiting = true;
     
@@ -209,7 +209,7 @@ void ProactiveExecutor<Closure>::_spawn(unsigned N) {
       
       Worker w;
       
-      std::unique_lock lock(_mutex);
+      std::unique_lock<std::mutex> lock(_mutex);
 
       while(!_exiting) {
 
