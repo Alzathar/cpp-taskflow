@@ -211,7 +211,7 @@ void SimpleExecutor<Closure>::emplace(ArgsT&&... args) {
   }
   // Dispatch this to a thread.
   else {
-    std::scoped_lock lock(_mutex);
+    std::lock_guard<std::mutex> lock(_mutex);
     _tasks.emplace_back(std::forward<ArgsT>(args)...);
     _worker_signal.notify_one();
   }
@@ -233,7 +233,7 @@ void SimpleExecutor<Closure>::batch(std::vector<Closure>& tasks) {
   else {
     bool notify_all = tasks.size() > 1;
     {
-      std::scoped_lock lock(_mutex);
+      std::lock_guard<std::mutex> lock(_mutex);
       _tasks.reserve(_tasks.size() + tasks.size());
       std::move(tasks.begin(), tasks.end(), std::back_inserter(_tasks));
     }
@@ -255,7 +255,7 @@ void SimpleExecutor<Closure>::_shutdown() {
   assert(is_owner());
 
   {
-    std::scoped_lock lock(_mutex);
+    std::lock_guard<std::mutex> lock(_mutex);
     _stop = true;
     _worker_signal.notify_all();
   }

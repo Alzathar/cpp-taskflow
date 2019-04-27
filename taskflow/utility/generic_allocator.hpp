@@ -141,7 +141,7 @@ struct MempoolManager {
   struct Handle {
 
     Handle(MempoolManager<T> &mgr) : manager {mgr} {
-      std::scoped_lock lock(mgr.mtx);
+      std::lock_guard<std::mutex> lock(mgr.mtx);
       if(mgr.pools.empty()) {
         mempool = new Mempool<T>();
       }
@@ -153,7 +153,7 @@ struct MempoolManager {
   
     ~Handle() {
       // Return the memory pool to MempoolManager
-      std::scoped_lock lock(manager.mtx);
+      std::lock_guard<std::mutex> lock(manager.mtx);
       manager.pools.emplace_back(mempool);
     }
   
@@ -168,7 +168,7 @@ struct MempoolManager {
 
   // Dtor
   ~MempoolManager() {
-    std::scoped_lock lock(mtx);
+    std::lock_guard<std::mutex> lock(mtx);
     for(auto& p : pools) {
       delete p;
     }

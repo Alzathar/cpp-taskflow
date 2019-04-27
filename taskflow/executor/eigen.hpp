@@ -552,7 +552,7 @@ void EigenWorkStealingExecutor<Closure>::emplace(ArgsT&&... args){
   }
   // other threads
   else {
-    //std::scoped_lock lock(_mutex);
+    //std::lock_guard<std::mutex> lock(_mutex);
     //_queue.push(Closure{std::forward<ArgsT>(args)...});
     Closure c{std::forward<ArgsT>(args)...};
 

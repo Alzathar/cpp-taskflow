@@ -60,25 +60,25 @@ TEST_CASE("Executor" * doctest::timeout(300)) {
       for(int n = 0; n<10000; ++n) {
 
         tf1.emplace([&] () {
-          std::scoped_lock lock(mutex);
+          std::lock_guard<std::mutex> lock(mutex);
           threads.insert(std::this_thread::get_id());
           counter.fetch_add(1, std::memory_order_relaxed);
         });
 
         tf2.emplace([&] () {
-          std::scoped_lock lock(mutex);
+          std::lock_guard<std::mutex> lock(mutex);
           threads.insert(std::this_thread::get_id());
           counter.fetch_add(1, std::memory_order_relaxed);
         });
         
         tf3.emplace([&] () {
-          std::scoped_lock lock(mutex);
+          std::lock_guard<std::mutex> lock(mutex);
           threads.insert(std::this_thread::get_id());
           counter.fetch_add(1, std::memory_order_relaxed);
         });
         
         tf4.emplace([&] () {
-          std::scoped_lock lock(mutex);
+          std::lock_guard<std::mutex> lock(mutex);
           threads.insert(std::this_thread::get_id());
           counter.fetch_add(1, std::memory_order_relaxed);
         });

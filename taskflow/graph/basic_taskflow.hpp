@@ -315,7 +315,7 @@ std::shared_future<void> BasicTaskflow<E>::run_until(Framework& f, P&& predicate
   }
 
   // Multi-threaded execution.
-  std::scoped_lock lock(f._mtx);
+  std::lock_guard<std::mutex> lock(f._mtx);
 
   f._topologies.push_back(&tpg);
 

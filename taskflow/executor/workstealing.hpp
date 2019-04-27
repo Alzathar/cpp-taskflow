@@ -717,7 +717,7 @@ void WorkStealingExecutor<Closure>::emplace(ArgsT&&... args){
   }
   // other threads
   else {
-    std::scoped_lock lock(_mutex);
+    std::lock_guard<std::mutex> lock(_mutex);
     _queue.push(Closure{std::forward<ArgsT>(args)...});
   }
 
@@ -760,7 +760,7 @@ void WorkStealingExecutor<Closure>::batch(std::vector<Closure>& tasks) {
   }
   
   {
-    std::scoped_lock lock(_mutex);
+    std::lock_guard<std::mutex> lock(_mutex);
 
     for(size_t k=0; k<tasks.size(); ++k) {
       _queue.push(std::move(tasks[k]));

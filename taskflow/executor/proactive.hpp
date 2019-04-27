@@ -274,7 +274,7 @@ void ProactiveExecutor<Closure>::emplace(ArgsT&&... args) {
   }
   // ask one worker to run the task
   else {
-    std::scoped_lock lock(_mutex);
+    std::lock_guard<std::mutex> lock(_mutex);
     if(_idlers.empty()){
       _tasks.emplace_back(std::forward<ArgsT>(args)...);
     } 
@@ -302,7 +302,7 @@ void ProactiveExecutor<Closure>::batch(std::vector<Closure>& tasks) {
   // ask one worker to run the task
   else {
     size_t consumed {0};
-    std::scoped_lock lock(_mutex);
+    std::lock_guard<std::mutex> lock(_mutex);
     if(_idlers.empty()){
       std::move(tasks.begin(), tasks.end(), std::back_inserter(_tasks));
       return ;

@@ -211,7 +211,7 @@ void SpeculativeExecutor<Closure>::_spawn(unsigned N) {
   assert(is_owner() && _workers.size() == N);
 
   // Lock to synchronize all workers before creating _worker_mapss
-  std::scoped_lock lock(_mutex);
+  std::lock_guard<std::mutex> lock(_mutex);
 
   for(size_t i=0; i<N; ++i){
 
@@ -293,7 +293,7 @@ void SpeculativeExecutor<Closure>::emplace(ArgsT&&... args) {
     }
   }
 
-  std::scoped_lock lock(_mutex);
+  std::lock_guard<std::mutex> lock(_mutex);
   if(_idlers.empty()){
     _tasks.emplace_back(std::forward<ArgsT>(args)...);
   } 
@@ -335,7 +335,7 @@ void SpeculativeExecutor<Closure>::batch(std::vector<Closure>& tasks){
     }
   }
 
-  std::scoped_lock lock(_mutex);
+  std::lock_guard<std::mutex> lock(_mutex);
   while(!_idlers.empty() && tasks.size() != consumed) {
     Worker* w = _idlers.back();
     _idlers.pop_back();
