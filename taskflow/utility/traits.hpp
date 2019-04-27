@@ -99,7 +99,9 @@ struct MoC {
 //-----------------------------------------------------------------------------
 // Functors.
 //-----------------------------------------------------------------------------
-
+// See https://en.cppreference.com/w/cpp/utility/variant/visit
+#if define(CPP_TASKFLOW_VARIANT_VISIT_HELPER_4)
+// helper type for the visitor #4
 // Overloadded.
 template <typename... Ts>
 struct Functors : Ts... { 
@@ -108,6 +110,9 @@ struct Functors : Ts... {
 
 template <typename... Ts>
 Functors(Ts...) -> Functors<Ts...>;
-
+#else
+// helper type for the visitor #3
+template<class T> struct always_false : std::false_type {};
+#endif
 
 }  // end of namespace tf. ---------------------------------------------------

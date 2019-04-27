@@ -112,6 +112,7 @@ inline void Topology::dump(std::ostream& os) const {
   
   os << "digraph Topology {\n";
 
+#if define(CPP_TASKFLOW_VARIANT_VISIT_HELPER_4)
   std::visit(Functors{
     [&] (const Graph& graph) {
       for(const auto& node : graph) {
@@ -124,6 +125,23 @@ inline void Topology::dump(std::ostream& os) const {
       }
     }
   }, _handle);
+#else
+  std::visit([&](auto&& arg) {
+      using T = std::decay_t<decltype(arg)>;
+      if constexpr (std::is_same_v<T, Graph>) {
+        for(const auto& node : arg) {
+          node.dump(os);
+        }
+      } else if constexpr (std::is_same_v<T, Framework*>) {
+        for(const auto& node : arg->_graph) {
+          node.dump(os);
+        }
+      } else  {
+        static_assert(always_false<T>::value, "non-exhaustive visitor!");
+      }
+          
+  }, _handle);
+#endif
 
   os << "}\n";
 }
